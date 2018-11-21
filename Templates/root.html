@@ -1,0 +1,81 @@
+{{template "layout"}}
+{{define "content"}}
+<script>
+    function subGroupID() {
+        $('#gameID').focus()
+        var gameID = $('#gameID').val();
+        $.post("/ajax/boardgamesCounter", {gameID: gameID}, function () {
+            $('#gameID').attr("disabled", "disabled");
+        })
+            .done(function (data) {
+                $('#gameID').val("");
+                console.log("Sucess");
+                console.log(data);
+            })
+            .fail(function () {
+                alert("error");
+            })
+            .always(function () {
+                $("#gameID").removeAttr("disabled");
+                $('#gameID').focus()
+            });
+        return false;
+    }
+</script>
+<style>
+    .textBox {
+        width: 90%;
+        margin: auto;
+    }
+
+    .title {
+        padding: 10px;
+    }
+</style>
+<!--<h1> Welcome To The UNSW Boardgames & RPG Society</h1>-->
+<h2 class="title"> Please Type/Scan In The Games ID</h2>
+<form class="form-group" id="gameIDForm" onsubmit="return subGroupID()">
+    <div>
+        <input class="form-control textBox" id="gameID" type="text" name="gameID">
+    </div>
+    <!--<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"  tabindex="-1" />-->
+</form>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CreateItem">Add New Item</button>
+
+<table></table>
+
+
+<div id="Modal Divs">
+    <!-- Modal -->
+    <div id="CreateItem" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Item</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" id="gameIDForm" onsubmit="return subGroupID()">
+                        <div>
+                            <label for="newitem-name">Name of the boardgame</label>
+                            <input class="form-control" id="newitem-name" type="text" name="name">
+                            <label for="newitem-num-players">The Number of players</label>
+                            <input class="form-control" id="newitem-num-players" type="number" name="num-players">
+                            <label for="newitem-society-owned">Is this a Society Game</label>
+                            <input class="form-control" id="newitem-society-owned" type="checkbox" name="society-owned">
+                        </div>
+                        <!--<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"  tabindex="-1" />-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{{end}}
